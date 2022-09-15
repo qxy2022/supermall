@@ -11,5 +11,14 @@ module.exports = defineConfig({
         'views': '@/views'
       }
     }
+  },
+  pwa: {
+    iconPath: {
+      favicon32: 'favicon.png',
+      favicon16: 'favicon.png',
+      appleTouchIcon: 'favicon.png',
+      maskIcon: 'favicon.png',
+      msTileImage: 'favicon.png'
+    }
   }
 })
