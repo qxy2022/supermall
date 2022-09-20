@@ -2,14 +2,16 @@
   <div id="home">
     <NavBar class="home-nav"><template #center>购物街</template></NavBar>
 
-    <HomeSwiper :banners="banners" />
-    <HomeRecommendView :recommends="recommends" />
-    <FeatureView />
-    <TabControl class="tab-control" :titles="['流行', '新款', '精选']" @tabClick="tabClick" />
-    <GoodsList :goods="showGoods" />
-    <GoodsListItem />
+    <Scroll class="scroll">
+      <HomeSwiper :banners="banners" />
+      <HomeRecommendView :recommends="recommends" />
+      <FeatureView />
+      <TabControl class="tab-control" :titles="['流行', '新款', '精选']" @tabClick="tabClick" />
+      <GoodsList :goods="showGoods" />
+      <GoodsListItem />
+    </Scroll>
 
-    <BackTop @click.native="backClick" ref="scroll"/>
+    <BackTop @click.native="backClick" ref="scroll" />
   </div>
 </template>
 
@@ -22,6 +24,7 @@ import NavBar from '@/components/common/navbar/NavBar.vue';
 import TabControl from '@/components/content/tabControl/TabControl.vue';
 import GoodsList from '@/components/content/goods/GoodsList.vue';
 import GoodsListItem from '@/components/content/goods/GoodsListItem.vue';
+import Scroll from '@/components/common/scroll/Scroll.vue';
 import BackTop from '@/components/content/backTop/BackTop.vue';
 
 import { getHomeMultidata, getHomeGoods } from '@/network/home';
@@ -36,8 +39,9 @@ export default {
     TabControl,
     GoodsList,
     GoodsListItem,
-    BackTop
-},
+    BackTop,
+    Scroll
+  },
   data() {
     return {
       banners: [],
@@ -104,6 +108,10 @@ export default {
 </script>
 
 <style scoped>
+#home {
+  position: relative;
+}
+
 .home-nav {
   background-color: var(--color-tint);
   color: #fff;
@@ -117,5 +125,13 @@ export default {
   position: sticky;
   top: 44px;
   z-index: 9;
+}
+
+.scroll {
+  position: absolute;
+  top: 44px;
+  bottom: 49px;
+  left: 0;
+  right: 0;
 }
 </style>
