@@ -2,7 +2,7 @@
   <div id="home">
     <NavBar class="home-nav"><template #center>购物街</template></NavBar>
 
-    <Scroll class="scroll">
+    <Scroll class="scroll" ref="scroll" :probe-type="3" @scroll="contentScroll">
       <HomeSwiper :banners="banners" />
       <HomeRecommendView :recommends="recommends" />
       <FeatureView />
@@ -11,7 +11,7 @@
       <GoodsListItem />
     </Scroll>
 
-    <BackTop @click.native="backClick" ref="scroll" />
+    <BackTop @click.native="backClick" v-show="isShowBackTop" />
   </div>
 </template>
 
@@ -51,7 +51,8 @@ export default {
         'new': { page: 0, list: [] },
         'sell': { page: 0, list: [] }
       },
-      currentType: 'pop'
+      currentType: 'pop',
+      isShowBackTop: false
     }
   },
   computed: {
@@ -83,7 +84,10 @@ export default {
       }
     },
     backClick() {
-      this.$refs.scroll.scrollTo(0, 0)
+      this.$refs.scroll.scrollTo(0, 0, 500)
+    },
+    contentScroll(position) {
+      this.isShowBackTop = position.y < -1000
     },
 
     /* 
