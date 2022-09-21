@@ -2,7 +2,9 @@
   <div id="home">
     <NavBar class="home-nav"><template #center>购物街</template></NavBar>
 
-    <Scroll class="scroll" ref="scroll" :probe-type="3" @scroll="contentScroll">
+    <Scroll class="scroll" ref="scroll" 
+    :probe-type="3" :pull-up-load="true" 
+    @scroll="contentScroll" @pullingUp="loadMore" >
       <HomeSwiper :banners="banners" />
       <HomeRecommendView :recommends="recommends" />
       <FeatureView />
@@ -89,7 +91,9 @@ export default {
     contentScroll(position) {
       this.isShowBackTop = position.y < -1000
     },
-
+    loadMore() {
+      this.getHomeGoods(this.currentType)
+    },
     /* 
     网络请求
     */
@@ -104,6 +108,8 @@ export default {
       getHomeGoods(type, page).then(res => {
         this.goods[type].list.push(...res.data.list)
         this.goods[type].page += 1
+
+        this.$refs.scroll.finishPullUp()
       }
       )
     }
