@@ -37,8 +37,8 @@
     display: flex;
     text-align: center;
     font-size: 15px;
-    height: 60px;
-    line-height: 60px;
+    height: 50px;
+    line-height: 50px;
     background-color: #fff;
   }
   .tab-control-item {

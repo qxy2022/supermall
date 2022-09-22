@@ -1,14 +1,14 @@
 <template>
   <div id="home">
     <NavBar class="home-nav"><template #center>购物街</template></NavBar>
+    <TabControl :titles="['流行', '新款', '精选']" @tabClick="tabClick" ref="tabControl1" class="tab-control1" v-show="isTabFixed"/>
 
-    <Scroll class="scroll" ref="scroll" 
-    :probe-type="3" :pull-up-load="true" 
-    @scroll="contentScroll" @pullingUp="loadMore" >
-      <HomeSwiper :banners="banners" />
+    <Scroll class="scroll" ref="scroll" :probe-type="3" :pull-up-load="true" @scroll="contentScroll"
+      @pullingUp="loadMore">
+      <HomeSwiper :banners="banners" @swiperImageLoad="swiperImageLoad" />
       <HomeRecommendView :recommends="recommends" />
       <FeatureView />
-      <TabControl class="tab-control" :titles="['流行', '新款', '精选']" @tabClick="tabClick" />
+      <TabControl :titles="['流行', '新款', '精选']" @tabClick="tabClick" ref="tabControl2"/>
       <GoodsList :goods="showGoods" />
       <GoodsListItem />
     </Scroll>
@@ -54,13 +54,23 @@ export default {
         'sell': { page: 0, list: [] }
       },
       currentType: 'pop',
-      isShowBackTop: false
+      isShowBackTop: false,
+      tabOffsetTop: 0,
+      isTabFixed: false,
+      saveY: 0
     }
   },
   computed: {
     showGoods() {
       return this.goods[this.currentType].list
     }
+  },
+  activated() {
+    this.$refs.scroll.scrollTo(0, this.saveY, 0)
+    this.$refs.scroll.refresh()
+  },
+  deactivated() {
+    this.saveY = this.$refs.scroll.getScrollY()
   },
   created() {
     this.getHomeMultidata()
@@ -84,15 +94,22 @@ export default {
           this.currentType = 'sell'
           break;
       }
+      this.$refs.tabControl1.currentIndex = index
+      this.$refs.tabControl2.currentIndex = index
     },
     backClick() {
       this.$refs.scroll.scrollTo(0, 0, 500)
     },
     contentScroll(position) {
       this.isShowBackTop = position.y < -1000
+
+      this.isTabFixed = position.y < -this.tabOffsetTop
     },
     loadMore() {
       this.getHomeGoods(this.currentType)
+    },
+    swiperImageLoad() {
+      this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
     },
     /* 
     网络请求
@@ -120,21 +137,16 @@ export default {
 <style scoped>
 #home {
   position: relative;
+  height: 100vh;
 }
 
 .home-nav {
   background-color: var(--color-tint);
   color: #fff;
-
+/* 
   position: sticky;
   top: 0;
-  z-index: 9;
-}
-
-.tab-control {
-  position: sticky;
-  top: 44px;
-  z-index: 9;
+  z-index: 9;  */
 }
 
 .scroll {
@@ -143,5 +155,11 @@ export default {
   bottom: 49px;
   left: 0;
   right: 0;
+  overflow: hidden;
+}
+
+.tab-control {
+  position: relative;
+  z-index: 9;
 }
 </style>

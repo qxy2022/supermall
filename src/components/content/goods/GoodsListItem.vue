@@ -1,5 +1,5 @@
 <template>
-  <div class="goods-item">
+  <div class="goods-item" v-if="goodsItem.show">
     <img :src="goodsItem.show.img" alt="">
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
@@ -16,9 +16,7 @@ export default {
     goodsItem: {
       type: Object,
       default() {
-        return {
-          show: {}
-        }
+        return {}
       }
     }
   }
@@ -70,6 +68,6 @@ export default {
   top: -1px;
   width: 14px;
   height: 14px;
-  background: url("~assets/img/common/collect.svg") 0 0/14px 14px; 
+  background: url("~assets/img/common/collect.svg") 0 0/14px 14px;
 }
 </style>
