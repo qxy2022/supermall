@@ -3,7 +3,10 @@
     <NavBar class="home-nav"><template #center>购物街</template></NavBar>
     <TabControl :titles="['流行', '新款', '精选']" @tabClick="tabClick" ref="tabControl1" class="tab-control1" v-show="isTabFixed"/>
 
-    <Scroll class="scroll" ref="scroll" :probe-type="3" :pull-up-load="true" @scroll="contentScroll"
+    <Scroll class="scroll" ref="scroll" 
+      :probe-type="3" 
+      :pull-up-load="true" 
+      @scroll="contentScroll" 
       @pullingUp="loadMore">
       <HomeSwiper :banners="banners" @swiperImageLoad="swiperImageLoad" />
       <HomeRecommendView :recommends="recommends" />
@@ -66,7 +69,7 @@ export default {
     }
   },
   activated() {
-    this.$refs.scroll.scrollTo(0, this.saveY, 0)
+    this.$refs.scroll.scrollTo(0, this.saveY, 1)
     this.$refs.scroll.refresh()
   },
   deactivated() {

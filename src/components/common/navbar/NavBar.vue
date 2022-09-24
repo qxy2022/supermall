@@ -14,17 +14,7 @@
 
 <script>
 export default {
-  name: 'NavBar',
-  data() {
-    return {
-
-    }
-  },
-  components: {
-  },
-  methods: {
-
-  }
+  name: 'NavBar'
 }
 </script>
 

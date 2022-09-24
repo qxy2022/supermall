@@ -1,5 +1,5 @@
 <template>
-  <div class="goods-item" v-if="goodsItem.show">
+  <div class="goods-item" v-if="goodsItem.show" @click="itemClick">
     <img :src="goodsItem.show.img" alt="">
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
@@ -18,6 +18,11 @@ export default {
       default() {
         return {}
       }
+    }
+  },
+  methods: {
+    itemClick() {
+      this.$router.push('/detail/' + this.goodsItem.iid)
     }
   }
 }
