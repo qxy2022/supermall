@@ -3,7 +3,7 @@
     <keep-alive exclude="Detail">
       <router-view></router-view>
     </keep-alive>
-    <MainTabBar></MainTabBar>
+    <MainTabBar v-if="$route.meta.footShow"></MainTabBar>
   </div>
 </template>
 
