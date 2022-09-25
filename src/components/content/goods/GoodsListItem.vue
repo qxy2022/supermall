@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item" v-if="goodsItem.show || goodsItem.image" @click="itemClick">
-    <img :src="showImage" alt="">
+    <img :src="showImage" alt="" @load="imgLoad">
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}}</span>
@@ -27,18 +27,21 @@ export default {
   },
   methods: {
     imgLoad() {
-      this.$bus.$emit('itemImgLoad')
-      // if(this.$route.path.indexOf('/home')) {
-      //   this.$bus.$emit('homeItemImgLoad')
-      // } else if (this.$router.path.indexOf('/detail')){
-      //   this.$bus.$emit('detailItemImgLoad')
-      // }
+      // this.$bus.$emit('itemImgLoad')
+      // 问题：detail的图片加载完，Home刷新。办法：1.在这分类 2.传同一个'itemImgLoad'，在Home.vue的deactivated取消事件监听，在Detail.vue的destroyed取消事件监听
+      let path = this.$route.path
+      if (path.indexOf('/home') !== -1) {
+        this.$bus.$emit('homeImgLoad')
+      } else if (path.indexOf('/detail') !== -1) {
+        this.$bus.$emit('detailImgLoad')
+      }
     },
     itemClick() {
       this.$router.push('/detail/' + this.goodsItem.iid)
     }
   }
 }
+
 </script>
 
 <style scoped>
