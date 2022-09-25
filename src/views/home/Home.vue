@@ -1,17 +1,15 @@
 <template>
   <div id="home">
     <NavBar class="home-nav"><template #center>购物街</template></NavBar>
-    <TabControl :titles="['流行', '新款', '精选']" @tabClick="tabClick" ref="tabControl1" class="tab-control1" v-show="isTabFixed"/>
+    <TabControl :titles="['流行', '新款', '精选']" @tabClick="tabClick" ref="tabControl1" class="tab-control1"
+      v-show="isTabFixed" />
 
-    <Scroll class="scroll" ref="scroll" 
-      :probe-type="3" 
-      :pull-up-load="true" 
-      @scroll="contentScroll" 
+    <Scroll class="scroll" ref="scroll" :probe-type="3" :pull-up-load="true" @scroll="contentScroll"
       @pullingUp="loadMore">
       <HomeSwiper :banners="banners" @swiperImageLoad="swiperImageLoad" />
       <HomeRecommendView :recommends="recommends" />
       <FeatureView />
-      <TabControl :titles="['流行', '新款', '精选']" @tabClick="tabClick" ref="tabControl2"/>
+      <TabControl :titles="['流行', '新款', '精选']" @tabClick="tabClick" ref="tabControl2" />
       <GoodsList :goods="showGoods" />
       <GoodsListItem />
     </Scroll>
@@ -33,6 +31,7 @@ import Scroll from '@/components/common/scroll/Scroll.vue';
 import BackTop from '@/components/content/backTop/BackTop.vue';
 
 import { getHomeMultidata, getHomeGoods } from '@/network/home';
+import { debounce } from '@/common/utils';
 
 export default {
   name: 'Home',
@@ -73,6 +72,7 @@ export default {
     this.$refs.scroll.refresh()
   },
   deactivated() {
+    // 保存Y值
     this.saveY = this.$refs.scroll.getScrollY()
   },
   created() {
@@ -80,7 +80,7 @@ export default {
     this.getHomeGoods('pop')
     this.getHomeGoods('new')
     this.getHomeGoods('sell')
-  },
+  }, 
   methods: {
     /* 
     事件监听
@@ -146,7 +146,7 @@ export default {
 .home-nav {
   background-color: var(--color-tint);
   color: #fff;
-/* 
+  /* 
   position: sticky;
   top: 0;
   z-index: 9;  */

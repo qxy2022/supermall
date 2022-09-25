@@ -1,5 +1,5 @@
 <template>
-  <div class="goods-info">
+  <div v-if="detailInfo.detailImage" class="goods-info">
     <div class="info-desc clear-fix">
       <div class="start">
       </div>
