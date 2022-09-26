@@ -1,15 +1,17 @@
 <template>
   <div id="detail">
-    <DetailNavBar class="detail-nav" @titleClick="titleClick" ref="detailNav"></DetailNavBar>
+    <DetailNavBar class="detail-nav" @titleClick="titleClick" ref="detailNav" />
     <Scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll">
-      <DetailSwiper :top-images="topImages"></DetailSwiper>
-      <DetailBaseInfo :goods="goods"></DetailBaseInfo>
-      <DetailShopInfo :shop="shop"></DetailShopInfo>
-      <DetailGoodsInfo :detail-info="detailInfo"></DetailGoodsInfo>
-      <DetailParamInfo :param-info="paramInfo" ref="params"></DetailParamInfo>
-      <DetailCommentInfo :comment-info="commentInfo" ref="comments"></DetailCommentInfo>
-      <GoodsList :goods="recommends" ref="recommends"></GoodsList>
+      <DetailSwiper :top-images="topImages" />
+      <DetailBaseInfo :goods="goods" />
+      <DetailShopInfo :shop="shop" />
+      <DetailGoodsInfo :detail-info="detailInfo" />
+      <DetailParamInfo :param-info="paramInfo" ref="params" />
+      <DetailCommentInfo :comment-info="commentInfo" ref="comments" />
+      <GoodsList :goods="recommends" ref="recommends" />
     </Scroll>
+    <DetailBottomBar />
+    <BackTop @click.native="backTop" v-show="isShowBackTop"/>
   </div>
 </template>
 
@@ -23,9 +25,11 @@ import DetailGoodsInfo from './childComponents/DetailGoodsInfo.vue';
 import DetailParamInfo from './childComponents/DetailParamInfo.vue';
 import DetailCommentInfo from './childComponents/DetailCommentInfo.vue';
 import GoodsList from '@/components/content/goods/GoodsList.vue';
+import DetailBottomBar from './childComponents/DetailBottomBar.vue';
 
 import { getDetail, Goods, Shop, GoodsParam, getRecommend } from '@/network/detail';
 import { debounce } from '@/common/utils';
+import { backTopMixin } from '@/common/mixin'
 
 export default {
   name: "Detail",
@@ -38,8 +42,10 @@ export default {
     DetailGoodsInfo,
     DetailParamInfo,
     DetailCommentInfo,
-    GoodsList
+    GoodsList,
+    DetailBottomBar,
   },
+  mixins: [backTopMixin],
   data() {
     return {
       iid: null,
@@ -124,6 +130,8 @@ export default {
           this.$refs.detailNav.currentIndex = this.currentIndex
         }
       }
+      // BackTop 显示与隐藏
+      this.isShowBackTop = positionY > 700
     }
   }
 }
@@ -131,7 +139,8 @@ export default {
 
 <style scoped>
 .content {
-  height: calc(100vh - 44px);
+  height: calc(100vh - 93px);
+  background-color: #fff;
 }
 
 .detail-nav {
