@@ -14,7 +14,7 @@
       <GoodsListItem />
     </Scroll>
 
-    <BackTop @click.native="backClick" v-show="isShowBackTop" />
+    <BackTop @click.native="backTop" v-show="isShowBackTop" />
   </div>
 </template>
 
@@ -28,10 +28,9 @@ import TabControl from '@/components/content/tabControl/TabControl.vue';
 import GoodsList from '@/components/content/goods/GoodsList.vue';
 import GoodsListItem from '@/components/content/goods/GoodsListItem.vue';
 import Scroll from '@/components/common/scroll/Scroll.vue';
-import BackTop from '@/components/content/backTop/BackTop.vue';
 
 import { getHomeMultidata, getHomeGoods } from '@/network/home';
-import { debounce } from '@/common/utils';
+import { backTopMixin } from '@/common/mixin'
 
 export default {
   name: 'Home',
@@ -43,9 +42,9 @@ export default {
     TabControl,
     GoodsList,
     GoodsListItem,
-    BackTop,
     Scroll
   },
+  mixins: [backTopMixin],
   data() {
     return {
       banners: [],
@@ -99,9 +98,6 @@ export default {
       }
       this.$refs.tabControl1.currentIndex = index
       this.$refs.tabControl2.currentIndex = index
-    },
-    backClick() {
-      this.$refs.scroll.scrollTo(0, 0, 500)
     },
     contentScroll(position) {
       this.isShowBackTop = position.y < -1000

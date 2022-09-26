@@ -10,7 +10,7 @@
       <DetailCommentInfo :comment-info="commentInfo" ref="comments" />
       <GoodsList :goods="recommends" ref="recommends" />
     </Scroll>
-    <DetailBottomBar />
+    <DetailBottomBar @addCart="addToCart"/>
     <BackTop @click.native="backTop" v-show="isShowBackTop"/>
   </div>
 </template>
@@ -132,6 +132,18 @@ export default {
       }
       // BackTop 显示与隐藏
       this.isShowBackTop = positionY > 700
+    },
+    addToCart() {
+      // 1.获取购物车需要的信息
+      const product = {}
+      product.image = this.topImages[0]
+      product.title = this.goods.title
+      product.desc = this.goods.desc
+      product.price = this.goods.newPrice
+      product.iid = this.iid
+
+      // 2.product加到vuex
+      this.$store.dispatch('addCart', product)
     }
   }
 }
