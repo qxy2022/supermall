@@ -30,6 +30,7 @@ import DetailBottomBar from './childComponents/DetailBottomBar.vue';
 import { getDetail, Goods, Shop, GoodsParam, getRecommend } from '@/network/detail';
 import { debounce } from '@/common/utils';
 import { backTopMixin } from '@/common/mixin'
+import { mapActions } from 'vuex';
 
 export default {
   name: "Detail",
@@ -110,6 +111,7 @@ export default {
     this.$bus.$on('detailImgLoad', this.getThemeTopY)
   },
   methods: {
+    ...mapActions(['addCart']),
     titleClick(index) {
       this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 100)
     },
@@ -139,11 +141,17 @@ export default {
       product.image = this.topImages[0]
       product.title = this.goods.title
       product.desc = this.goods.desc
-      product.price = this.goods.newPrice
+      product.price = this.goods.realPrice
       product.iid = this.iid
 
       // 2.product加到vuex
-      this.$store.dispatch('addCart', product)
+      // this.$store.dispatch('addCart', product).then(res => {
+      //   console.log(res);
+      // })
+      this.addCart(product).then(res => {
+        this.$toast.show(res, 1500)
+        // console.log(this.$toast);
+      })
     }
   }
 }
